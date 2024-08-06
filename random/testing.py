@@ -49,15 +49,14 @@ print(testing_args('1', 2))
 r = requests.get("https://catfact.ninja/breeds?limit=1")
 print(r.status_code, r.json()['data'])
 
-dict: Dict = {'foo': 'bar', 'biz': 'baz'}
+dict: Dict[str, str] = {'foo': 'bar', 'biz': 'baz'}
 
 
 def object_to_index_arr(dict: Dict):
-    rtn_arr = []
-    cntr: int = 0
-    for x in list(dict.keys()):
-        rtn_arr.append([cntr, x])
-        cntr = cntr + 1
+    return functools.reduce(lambda accum, e:
+                            accum.append([e[0], e[1]]) or accum, enumerate(list(dict.keys())),
+                            [])
 
 
-object_to_index_arr(dict)
+result = object_to_index_arr(dict)
+print(result)
