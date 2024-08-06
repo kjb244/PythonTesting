@@ -1,6 +1,8 @@
 from collections import namedtuple
 import functools
 import requests
+from typing import Dict
+from typing import List
 
 
 def factorial(n):
@@ -39,7 +41,6 @@ n = N(a={'foo': 'bar'}, b='hi', c=[])
 
 
 def testing_args(*args):
-    counter = 0
     return functools.reduce(lambda accum, e: accum.update({e[0]: e[1]}) or accum, enumerate(list(args)), {})
 
 
@@ -47,3 +48,16 @@ print(testing_args('1', 2))
 
 r = requests.get("https://catfact.ninja/breeds?limit=1")
 print(r.status_code, r.json()['data'])
+
+dict: Dict = {'foo': 'bar', 'biz': 'baz'}
+
+
+def object_to_index_arr(dict: Dict):
+    rtn_arr = []
+    cntr: int = 0
+    for x in list(dict.keys()):
+        rtn_arr.append([cntr, x])
+        cntr = cntr + 1
+
+
+object_to_index_arr(dict)
