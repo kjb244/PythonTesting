@@ -1,8 +1,8 @@
+import re
 from collections import namedtuple
 import functools
 import requests
 from typing import Dict
-from typing import List
 
 
 def factorial(n):
@@ -60,3 +60,12 @@ def object_to_index_arr(dict: Dict):
 
 result = object_to_index_arr(dict)
 print(result)
+
+print('\nregexes')
+str = 'foo PINEAPPLE 30 APPLE 40'
+matches = re.findall(r'([A-Z]+)\s+(\d+)', str)
+for m in matches:
+    print(m[0], m[1])
+maybe_match = re.search(r'PINE', str)
+if(maybe_match):
+    print('similiar to javascript test is re.search')
