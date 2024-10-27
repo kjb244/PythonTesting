@@ -1,0 +1,3 @@
+name|age|dob
+kevin|40|01012024
+john|20|01021982
