@@ -78,6 +78,7 @@ def random_str():
     arr: List[str] = list('abcdefghijklmnopqrstuvwxyz')
     return ''.join(list(map(lambda x: arr[random.randint(0, 25)], list(range(1, 6)))))
 
-people: List[Person] = list(map(lambda x: Person(random_str(), x), list(range(1, 10))))
+
+people: List[Person] = [Person(random_str(), x) for x in range(1, 10)]
 for item in people:
     print(item)
