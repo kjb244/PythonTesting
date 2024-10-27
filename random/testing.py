@@ -1,8 +1,11 @@
+import random
 import re
 from collections import namedtuple
 import functools
 import requests
 from typing import Dict
+from person import Person
+from typing import List
 
 
 def factorial(n):
@@ -67,5 +70,14 @@ matches = re.findall(r'([A-Z]+)\s+(\d+)', str)
 for m in matches:
     print(m[0], m[1])
 maybe_match = re.search(r'PINE', str)
-if(maybe_match):
+if (maybe_match):
     print('similiar to javascript test is re.search')
+
+
+def random_str():
+    arr: List[str] = list('abcdefghijklmnopqrstuvwxyz')
+    return ''.join(list(map(lambda x: arr[random.randint(0, 25)], list(range(1, 6)))))
+
+people: List[Person] = list(map(lambda x: Person(random_str(), x), list(range(1, 10))))
+for item in people:
+    print(item)
