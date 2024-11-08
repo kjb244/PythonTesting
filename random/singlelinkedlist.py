@@ -11,13 +11,15 @@ class Node:
 
 class LinkedList:
     head: Union[None, Node] = None
-    tail_pointer: Union[None, Node] = None
+    tail: Union[None, Node] = None
 
     def add_head(self, item: T) -> None:
         n = Node(item)
         if self.head is None:
             self.head = n
+            self.tail = self.head
         else:
+            self.tail = self.head
             n.next = self.head
             self.head = n
 
@@ -25,11 +27,11 @@ class LinkedList:
         n = Node(item)
         if self.head is None:
             self.head = n
+            self.tail = self.head
         else:
-            temp = self.head
-            while temp.next is not None:
-                temp = temp.next
-            temp.next = n
+            self.tail.next = n
+            self.tail = self.tail.next
+
 
     def print(self):
         temp = self.head
@@ -42,4 +44,6 @@ l = LinkedList()
 l.add_head('h')
 l.add_head('k')
 l.add_last('r')
+l.add_last('p')
+l.add_last('w')
 l.print()
