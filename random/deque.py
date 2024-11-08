@@ -3,7 +3,7 @@ from typing import TypeVar, Union, Generic
 T = TypeVar('T')
 
 
-class Deque():
+class Deque:
     max_size = 3
     arr = [None for x in range(0, max_size)]
     front = -1
