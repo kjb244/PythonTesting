@@ -83,6 +83,14 @@ class LinkedList:
                     break
                 temp = temp.next
 
+    def to_list(self) -> List[T]:
+        temp = self.head
+        arr = []
+        while temp is not None:
+            arr.append(temp.item)
+            temp = temp.next
+        return arr
+
     def print(self) -> None:
         temp = self.head
         str = ''
