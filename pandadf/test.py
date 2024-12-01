@@ -26,10 +26,11 @@ print('')
 # output we want is vendor, amt, meta (json string of array of date, proj, series_id)
 def calculate_meta(row):
     arr = []
+    columns = ['date', 'proj', 'series_id']
     for i in range(len(row['date'])):
         meta = {}
-        meta.update({'date': row['date'][i]})
-        meta.update({'proj': row['proj'][i]})
+        for c in columns:
+            meta.update({c: row[c][i]})
         arr.append(meta)
     return arr
 
