@@ -1,6 +1,6 @@
 import os
 import re
-from typing import List, Union
+from typing import List, Union, Dict, Any
 
 import oracledb
 import pandas as pd
@@ -30,37 +30,60 @@ def get_oracle_engine():
         return engine
     except Exception as e:
         print(f"Error creating SQLAlchemy engine or connecting: {e}")
-        print("Please check your connection details and ensure SQLAlchemy and python-oracledb are installed.")
+        print(
+            "Please check your connection details and ensure SQLAlchemy and python-oracledb are installed."
+        )
         return None
 
 
-def get_df(query: str, in_list: Union[List[str], None] = None):
-    params = {}
-    if in_list and 'in_clause' in query.lower():
-        query = re.sub("in_clause", ', '.join([':' + str(i + 1) for i in range(len(last_names))]), query,
-                       flags=re.IGNORECASE)
+def get_df(query: str, parm_dict: Union[Dict[str, Any], None] = None):
+    params: Dict[str, str] = {}
 
-        params = {str(i + 1): value for i, value in enumerate(last_names)}
+    if parm_dict:
+        cntr: int = 1
+        for key, value in parm_dict.items():
+            value_is_list: bool = isinstance(value, list)
+            if value_is_list:
+                query = re.sub(
+                    key,
+                    ", ".join(
+                        [
+                            ":in" + str(cntr) + "_" + str(i + 1)
+                            for i in range(len(last_names))
+                        ]
+                    ),
+                    query,
+                    flags=re.NOFLAG,
+                )
+                params.update(
+                    {
+                        "in" + str(cntr) + "_" + str(i + 1): value
+                        for i, value in enumerate(last_names)
+                    }
+                )
 
-        # Execute query and load into DataFrame
-
+            else:
+                query = re.sub(key, ":" + key, query, re.NOFLAG)
+                params.update({key: value})
+            cntr += 1
     df = pd.read_sql(query, con=connection, params=params)
     return df
 
 
-# SQL query
-query = """
-SELECT *
-from contacts
-where last_name in (in_query)
-"""
-
 try:
+    query = """
+    SELECT *
+    from contacts
+    where last_name in (in_clause)
+    and phone = phone_clause
+    """
     # Establish connection
     connection = get_oracle_engine()
-    last_names = ['Barnett', 'Barry']
+    last_names = ["Barnett", "Barry", "Barrera"]
 
-    df = get_df("select * from contacts where last_name in (IN_CLAUSE)", last_names)
+    df = get_df(
+        query, parm_dict={"in_clause": last_names, "phone_clause": "+1 616 123 4234"}
+    )
 
     print(df)
 
